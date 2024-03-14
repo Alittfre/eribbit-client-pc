@@ -18,10 +18,12 @@
 
 <script>
 import appHeaderNav from '@/components/app-header-nav.vue'
+import { RouterLink } from 'vue-router'
 export default {
   name: 'AppHeader',
   components: {
-    appHeaderNav
+    appHeaderNav,
+    RouterLink
   }
 }
 </script>
