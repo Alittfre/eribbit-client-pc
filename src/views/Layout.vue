@@ -12,12 +12,17 @@
 import appTopnav from '@/components/app-topnav.vue'
 import appHeader from '@/components/app-header.vue'
 import appFooter from '@/components/app-footer.vue'
+import { useStore } from 'vuex'
 export default {
   name: 'xtx-layout',
   components: {
     appTopnav,
     appHeader,
     appFooter
+  },
+  setup () {
+    const store = useStore()
+    store.dispatch('category/getList')
   }
 }
 </script>
