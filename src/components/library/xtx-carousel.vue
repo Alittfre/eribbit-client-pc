@@ -22,7 +22,7 @@
 <script>
 import { onUnmounted, ref, watch } from 'vue'
 export default {
-  name: 'XtxCarousel',
+  name: 'xtxCarousel',
   props: {
     sliders: {
       type: Array,

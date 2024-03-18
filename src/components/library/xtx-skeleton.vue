@@ -7,7 +7,7 @@
 </template>
 <script>
 export default {
-  name: 'XtxSkeleton',
+  name: 'xtxSkeleton',
   // 使用的时候需要动态设置 高度，宽度，背景颜色，是否闪下
   props: {
     bg: {

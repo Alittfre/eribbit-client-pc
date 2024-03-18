@@ -28,7 +28,7 @@ export default {
     async getList ({ commit }) {
       // getCategory
       const { result } = await findAllCategory()
-      console.log(result)
+      // console.log(result)
       result.forEach(item => { item.open = false })
       commit('setList', result)
     }
