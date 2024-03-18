@@ -1,28 +1,88 @@
 <template>
-    <div class="xtx-carousel">
+    <div class="xtx-carousel" @mouseenter="stop()" @mouseleave="start()">
         <ul class="carousel-body">
-            <li class="carousel-item fade">
-                <RouterLink to="/">
-                    <img src="http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/1ba86bcc-ae71-42a3-bc3e-37b662f7f07e.jpg"
-                        alt="" />
+            <li class="carousel-item" :class="{ fade: activeInd === ind }" v-for="(item, ind) in sliders" :key="ind">
+                <RouterLink :to="item.hrefUrl">
+                    <img :src="item.imgUrl" alt="" />
                 </RouterLink>
             </li>
         </ul>
-        <a href="javascript:;" class="carousel-btn prev">
+        <a href="javascript:;" class="carousel-btn prev" @click="toggle(-1)">
             <i class="iconfont icon-angle-left"></i>
         </a>
-        <a href="javascript:;" class="carousel-btn next">
+        <a href="javascript:;" class="carousel-btn next" @click="toggle(1)">
             <i class="iconfont icon-angle-right"></i>
         </a>
         <div class="carousel-indicator">
-            <span v-for="i in 5" :key="i"></span>
+            <span v-for="(item, ind) in sliders" :key="ind" :class="{ active: activeInd === ind }"></span>
         </div>
     </div>
 </template>
 
 <script>
+import { onUnmounted, ref, watch } from 'vue'
 export default {
-  name: 'XtxCarousel'
+  name: 'XtxCarousel',
+  props: {
+    sliders: {
+      type: Array,
+      default: () => []
+    },
+    duration: {
+      type: Number,
+      default: 3000
+    },
+    autoPlay: {
+      type: Boolean,
+      default: false
+    }
+  },
+  setup (props) {
+    // 默认图片索引
+    const activeInd = ref(0)
+
+    // 切换轮播图
+    const toggle = (step) => {
+      const tmp = activeInd.value + step
+      if (tmp < 0) {
+        activeInd.value = props.sliders.length - 1
+      } else if (tmp > props.sliders.length - 1) {
+        activeInd.value = 0
+      } else {
+        activeInd.value = tmp
+      }
+    }
+
+    // 自动播放
+    let timer = null
+    const autoPlayFn = () => {
+      clearInterval(timer)
+      timer = setInterval(() => {
+        toggle(1)
+      }, props.duration)
+    }
+
+    watch(() => props.sliders, (newVal) => {
+      if (newVal.length > 1 && props.autoPlay) {
+        autoPlayFn()
+      }
+    }, { immediate: true })
+
+    const stop = () => {
+      if (timer) clearInterval(timer)
+    }
+    const start = () => {
+      if (props.sliders.length && props.autoPlay) {
+        autoPlayFn()
+      }
+    }
+
+    // 销毁定时器
+    onUnmounted(() => {
+      clearInterval(timer)
+    })
+    return { activeInd, toggle, stop, start }
+  }
 }
 </script>
 

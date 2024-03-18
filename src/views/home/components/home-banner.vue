@@ -1,12 +1,22 @@
 <template>
     <div class="home-banner">
-        <XtxCarousel />
+        <XtxCarousel :siders="list" />
     </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+import { findBanner } from '@/api/home'
+
 export default {
-  name: 'HomeBanner'
+  name: 'HomeBanner',
+  setup () {
+    const list = ref([])
+    findBanner().then(data => {
+      list.value = data.result
+    })
+    return { list }
+  }
 }
 </script>
 
