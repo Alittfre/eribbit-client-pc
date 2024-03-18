@@ -74,6 +74,51 @@ export default {
 }
 </script>
 <style scoped lang='less'>
+.home-panel {
+  background:#f5f5f5
+}
+.iconfont {
+  width: 20px;
+  height: 20px;
+  background: #ccc;
+  color: #fff;
+  display: inline-block;
+  text-align: center;
+  margin-left: 5px;
+  background: @xtxColor;
+  &::before {
+    font-size: 12px;
+    position: relative;
+    top: -2px
+  }
+  &.disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+}
+.box {
+  display: flex;
+  width: 100%;
+  height: 345px;
+  overflow: hidden;
+  padding-bottom: 40px;
+  .list {
+    width: 200%;
+    display: flex;
+    transition: all 1s;
+    li {
+      margin-right: 10px;
+      width: 240px;
+      &:nth-child(5n) {
+        margin-right: 0;
+      }
+      img {
+        width: 240px;
+        height: 305px;
+      }
+    }
+  }
+}
 .skeleton {
   width: 100%;
   display: flex;
