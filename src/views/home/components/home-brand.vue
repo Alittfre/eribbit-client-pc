@@ -15,7 +15,7 @@
       ></a>
     </template>
     <div ref="target" class="box">
-      <Transition name="fade">
+      <transition name="fade">
         <ul
           v-if="brands.length"
           class="list"
@@ -28,7 +28,7 @@
           </li>
         </ul>
         <div v-else class="skeleton">
-          <XtxSkeleton
+          <xtxSkeleton
             class="item"
             v-for="i in 5"
             :key="i"
@@ -38,7 +38,7 @@
             height="305px"
           />
         </div>
-      </Transition>
+      </transition>
     </div>
   </HomePanel>
 </template>
