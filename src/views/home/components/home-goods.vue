@@ -2,7 +2,7 @@
   <div class="goods-item">
     <RouterLink to="/" class="image">
       <img
-        :src="goods.picture"
+        v-lazyload="goods.picture"
         alt=""
       />
     </RouterLink>
