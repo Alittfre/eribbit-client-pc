@@ -4,8 +4,7 @@
       <!-- 面包屑 -->
       <xtxBread>
         <xtxBreadItem to="/">首页</xtxBreadItem>
-        <xtxBreadItem to="/category/1005000">电器</xtxBreadItem>
-        <xtxBreadItem >空调</xtxBreadItem>
+        <xtxBreadItem>{{ topCategory.name }}</xtxBreadItem>
       </xtxBread>
       <!-- 轮播图 -->
       <xtxCarousel :sliders="sliders" style="height:500px" />
@@ -13,10 +12,10 @@
       <div class="sub-list">
         <h3>全部分类</h3>
         <ul>
-          <li v-for="i in 8" :key="i">
+          <li v-for="item in topCategory.children" :key="item.id">
             <a href="javascript:;">
-              <img src="http://zhoushugang.gitee.io/erabbit-client-pc-static/uploads/img/category%20(9).png">
-              <p>空调</p>
+              <img :src="item.picture">
+              <p>{{item.name}}</p>
             </a>
           </li>
         </ul>
@@ -24,12 +23,12 @@
       <!-- 不同分类商品 -->
       <div class="ref-goods">
         <div class="head">
-          <h3>- 海鲜 -</h3>
-          <p class="tag">温暖柔软，品质之选</p>
+          <h3>- {{item.name}} -</h3>
+          <p class="tag">{{item.desc}}</p>
           <xtxMore />
         </div>
         <div class="body">
-          <GoodsItem v-for="i in 5" :key="i" />
+          <GoodsItem v-for="good in item.goods" :key="good.id" :godds="good"/>
         </div>
       </div>
     </div>
@@ -43,6 +42,9 @@ import { findBanner } from '@/api/home'
 
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
+import { findTopCategory } from '@/api/category'
+import { watch } from 'less'
+
 export default {
   name: 'TopCategory',
   components: {
@@ -66,7 +68,18 @@ export default {
       return cate
     })
 
-    return { sliders, topCategory }
+    // 推荐商品
+    const subList = ref([])
+    const getSubList = () => {
+      findTopCategory(route.params.id).then(data => {
+        subList.value = data.result.children
+      })
+    }
+    watch(() => route.params.id, (newVal) => {
+      newVal && getSubList()
+    }, { immediate: true })
+
+    return { sliders, topCategory, subList }
   }
 }
 </script>

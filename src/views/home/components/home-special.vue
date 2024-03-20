@@ -1,6 +1,6 @@
 <template>
   <HomePanel title="最新专题">
-    <template v-slot:right><XtxMore /></template>
+    <template v-slot:right><xtxMore /></template>
     <div class="special-list" ref="homeSpecial">
       <div class="special-item" v-for="item in list" :key="item.id">
         <RouterLink to="/">
@@ -10,7 +10,6 @@
               {{ item.title }}<small>{{ item.summary }}</small>
             </p>
             <span class="price">&yen;{{ item.lowestPrice }}起</span>
-            <span class="price">&yen;19.99起</span>
           </div>
         </RouterLink>
         <div class="foot">
@@ -37,8 +36,8 @@ export default {
   name: 'HomeSpecial',
   components: { HomePanel },
   setup () {
-    const { container, data } = useLazyData(findSpecial)
-    return { homeSpecial: container, list: data }
+    const { target, data } = useLazyData(findSpecial)
+    return { homeSpecial: target, list: data }
   }
 }
 </script>

@@ -9,17 +9,17 @@ export const findBanner = (distributionSite = 1) => {
 }
 
 export const findNew = () => {
-  return request('home/new', 'get')
+  return request('/home/new', 'get')
 }
 
 export const findHot = () => {
-  return request('home/hot', 'get')
+  return request('/home/hot', 'get')
 }
 
 export const findGoods = () => {
-  return request('home/goods', 'get')
+  return request('/home/goods', 'get')
 }
 
 export const findSpecial = () => {
-  return request('home/special', 'get')
+  return request('/home/special', 'get')
 }

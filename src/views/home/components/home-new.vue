@@ -2,8 +2,7 @@
   <div class="home-new">
     <HomePanel title="新鲜好物" sub-title="新鲜出炉 品质靠谱">
       <template v-slot:right><xtxMore /></template>
-      <div ref="target" style="position: relative; height: 406px">
-        +
+      <div ref="target" style="position: relative; height: 426px">
         <transition name="fade">
           <!-- 面板内容 -->
           <ul class="goods-list" v-if="goods.length" ref="pannel">
@@ -50,7 +49,7 @@ export default {
     //   }
     // )
     const { target, result } = useLazyData(findNew)
-
+    console.log(target)
     return { goods: result, target }
   }
 }

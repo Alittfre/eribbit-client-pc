@@ -10,9 +10,10 @@ export const useLazyData = (apiFn) => {
     target,
     ([{ isIntersecting }], observerElement) => {
       if (isIntersecting) {
-        stop()
+        console.log(target.value, '元素可见可以发请求了.....')
         apiFn().then(data => {
           result.value = data.result
+          stop()
         })
       }
     }, {
