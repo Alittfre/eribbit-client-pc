@@ -1,13 +1,16 @@
-<div class="xtx-bread-item">
+<template>
+  <div class="xtx-bread-item">
     <RouterLink v-if="to" :to="to"><slot /></RouterLink>
-      <span v-else><slot /></span>
-</div>
+    <span v-else><slot /></span>
+  </div>
+</template>
 <script>
 export default {
   name: 'xtxBreadItem',
   props: {
     to: {
-      type: [String, Object]
+      type: [String, Object],
+      default: ''
     }
   }
 }

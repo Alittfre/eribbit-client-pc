@@ -8,3 +8,11 @@ export const findAllCategory = () => {
 export const findTopCategory = (id) => {
   return request('/category', 'get', { id })
 }
+
+export const findSubCategoryFilter = (id) => {
+  return request('/category/sub/filter', 'get', { id })
+}
+
+export const findSubCategoryGoods = (params) => {
+  return request('/category/goods/temporary', 'post', params)
+}

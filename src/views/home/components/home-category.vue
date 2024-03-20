@@ -70,7 +70,8 @@ export default {
           id: item.id,
           name: item.name,
           // 防止初始化没有children的时候调用slice函数报错
-          children: item.children && item.children.slice(0, 2)
+          children: item.children && item.children.slice(0, 2),
+          goods: item.goods
         }
       })
       list.push(brand)

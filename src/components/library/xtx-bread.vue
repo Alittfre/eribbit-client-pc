@@ -1,28 +1,16 @@
-<div class='xtx-bread'>
-        <slot />
-</div>
-
 <script>
 import { h } from 'vue'
 export default {
   name: 'xtxBread',
-  //   props: {
-  //     parentName: {
-  //       type: String,
-  //       default: ''
-  //     },
-  //     parentPath: {
-  //       type: String,
-  //       default: ''
-  //     }
-  //   }
   render () {
     const items = this.$slots.default()
     const dymanicItems = []
     items.forEach((item, i) => {
-      dymanicItems.push(item)
-      if (i < items.length - 1) {
-        dymanicItems.push(h('i', { class: 'iconfont icon-angle-right' }))
+      if (item.type.name === 'xtxBreadItem' || item.type.displayName === 'Transition') {
+        dymanicItems.push(item)
+        if (i < items.length - 1) {
+          dymanicItems.push(h('i', { class: 'iconfont icon-angle-right' }))
+        }
       }
     })
     return h('div', { class: 'xtx-bread' }, dymanicItems)

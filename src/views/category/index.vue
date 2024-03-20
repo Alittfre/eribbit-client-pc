@@ -4,7 +4,9 @@
       <!-- 面包屑 -->
       <xtxBread>
         <xtxBreadItem to="/">首页</xtxBreadItem>
-        <xtxBreadItem>{{ topCategory.name }}</xtxBreadItem>
+        <Transition name="fade-right" mode="out-in">
+          <xtxBreadItem :key="topCategory.id">{{topCategory.name}}</xtxBreadItem>
+        </Transition>
       </xtxBread>
       <!-- 轮播图 -->
       <xtxCarousel :sliders="sliders" style="height:500px" />
@@ -21,14 +23,14 @@
         </ul>
       </div>
       <!-- 不同分类商品 -->
-      <div class="ref-goods">
+      <div class="ref-goods" v-for="sub in subList" :key="sub.id">
         <div class="head">
-          <h3>- {{item.name}} -</h3>
-          <p class="tag">{{item.desc}}</p>
-          <xtxMore />
+          <h3>- {{sub.name}} -</h3>
+          <p class="tag">{{sub.desc}}</p>
+          <xtxMore :path="`/category/sub/${sub.id}`"/>
         </div>
         <div class="body">
-          <GoodsItem v-for="good in item.goods" :key="good.id" :godds="good"/>
+          <GoodsItem v-for="good in sub.goods" :key="good.id" :goods="good"/>
         </div>
       </div>
     </div>
@@ -37,13 +39,12 @@
 <script>
 import GoodsItem from './components/goods-item'
 
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { findBanner } from '@/api/home'
 
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { findTopCategory } from '@/api/category'
-import { watch } from 'less'
 
 export default {
   name: 'TopCategory',
@@ -76,7 +77,7 @@ export default {
       })
     }
     watch(() => route.params.id, (newVal) => {
-      newVal && getSubList()
+      if (newVal && `/category/${newVal}` === route.path) getSubList()
     }, { immediate: true })
 
     return { sliders, topCategory, subList }
