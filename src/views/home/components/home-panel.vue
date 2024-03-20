@@ -7,6 +7,7 @@
         </h3>
         <slot name="right" />
       </div>
+      <slot />
     </div>
   </div>
 </template>

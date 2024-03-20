@@ -1,5 +1,5 @@
 <template>
-  <div class="home-product">
+  <div class="home-product" ref="target">
     <HomePanel :title="cate.name" v-for="cate in list" :key="cate.id">
       <template v-slot:right>
         <div class="sub">

@@ -1,7 +1,7 @@
 <template>
   <HomePanel title="最新专题">
     <template v-slot:right><xtxMore /></template>
-    <div class="special-list" ref="homeSpecial">
+    <div class="special-list" ref="target">
       <div class="special-item" v-for="item in list" :key="item.id">
         <RouterLink to="/">
           <img :src="item.cover" alt />
@@ -36,8 +36,8 @@ export default {
   name: 'HomeSpecial',
   components: { HomePanel },
   setup () {
-    const { target, data } = useLazyData(findSpecial)
-    return { homeSpecial: target, list: data }
+    const { target, result } = useLazyData(findSpecial)
+    return { target, list: result }
   }
 }
 </script>

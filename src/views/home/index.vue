@@ -1,5 +1,4 @@
 <template>
-  <div class="page-home">
     <div class="home-entry">
       <div class="container">
         <!-- 左侧分类 -->
@@ -18,7 +17,6 @@
     <HomeProduct />
     <!-- 最新专题 -->
     <HomeSpecial />
-  </div>
 </template>
 <script>
 import HomeCategory from './components/home-category'
