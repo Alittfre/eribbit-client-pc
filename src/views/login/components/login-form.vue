@@ -70,7 +70,7 @@
               type="text"
               placeholder="请输入验证码"
             />
-            <span class="code">发送验证码</span>
+            <span @click="send()" class="code">{{time === 0 ? '发送验证码' : `${time}秒后发送`}}</span>
           </div>
           <div class="error" v-if="errors.code">
             <i class="iconfont icon-warning" />{{ errors.code }}
@@ -103,9 +103,14 @@
   </div>
 </template>
 <script>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, onUnmounted } from 'vue'
 import { Form, Field } from 'vee-validate'
 import schema from '@/utils/vee-validate-schema'
+import { userAccountLogin, userMobileLogin, userMobileLoginMsg } from '@/api/user'
+import { useStore } from 'vuex'
+import { useRoute, useRouter } from 'vue-router'
+import Message from '@/components/library/Message'
+import { useIntervalFn } from '@vueuse/core'
 export default {
   name: 'LoginForm',
   components: {
@@ -141,11 +146,63 @@ export default {
       formCom.value.resetForm()
     })
 
+    const store = useStore()
+    const router = useRouter()
+    const route = useRoute()
     const login = async () => {
       const vaild = await formCom.value.validate()
-      console.log(vaild)
+      if (vaild) {
+        try {
+          let data = null
+          if (isMsgLogin.value) {
+            const { mobile, code } = form
+            data = await userMobileLogin({ mobile, code })
+          } else {
+            const { account, password } = form
+            data = await userAccountLogin({ account, password })
+          }
+          const { id, account, avatar, mobile, nickname, token } = data.result
+          store.commit('user/setUser', { id, account, avatar, mobile, nickname, token })
+          store.dispatch('cart/mergeCart').then(() => {
+            router.push(route.query.redirectUrl || '/')
+            Message({ type: 'success', text: '登陆成功' })
+          })
+        } catch (e) {
+          if (e.response.data) {
+            Message({ type: 'error', text: e.response.data.message || '登陆失败' })
+          }
+        }
+      }
     }
-    return { isMsgLogin, form, schema: mySchema, formCom, login }
+
+    const time = ref(0)
+    const { pause, resume } = useIntervalFn(() => {
+      time.value--
+      if (time.value <= 0) {
+        pause()
+      }
+    }, 1000, false)
+    onUnmounted(() => {
+      pause()
+    })
+
+    const send = async () => {
+      const valid = mySchema.mobile(form.mobile)
+      if (valid === true) {
+        // 通过
+        if (time.value === 0) {
+        // 没有倒计时才可以发送
+          await userMobileLoginMsg(form.mobile)
+          Message({ type: 'success', text: '发送成功' })
+          time.value = 60
+          resume()
+        }
+      } else {
+        // 失败，使用vee的错误函数显示错误信息 setFieldError(字段,错误信息)
+        formCom.value.setFieldError('mobile', valid)
+      }
+    }
+    return { isMsgLogin, form, schema: mySchema, formCom, login, send, time }
   }
 }
 </script>

@@ -4,6 +4,7 @@
 // import xtxBread from './xtx-bread.vue'
 // import xtxBreadItem from './xtx-bread-item.vue'
 import defaultImg from '@/assets/images/200.png'
+import Message from './Message'
 
 const importFn = require.context('./', false, /\.vue$/)
 
@@ -18,8 +19,8 @@ export default {
       const component = importFn(key).default
       app.component(component.name, component)
     })
-
     defineDirective(app)
+    app.config.globalProperties.$message = Message
   }
 }
 
