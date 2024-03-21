@@ -3,13 +3,20 @@
     <li class="home">
       <RouterLink to="/">首页</RouterLink>
     </li>
-    <li v-for="item in list" :key="item.id" @mousemove="show(item)" @mouseleave="hide(item)">
-      <RouterLink :to="`/category/${item.id}`" @click="hide(item)">{{ item.name }}</RouterLink>
+    <li
+      v-for="item in list"
+      :key="item.id"
+      @mousemove="show(item)"
+      @mouseleave="hide(item)"
+    >
+      <RouterLink :to="`/category/${item.id}`" @click="hide(item)">{{
+        item.name
+      }}</RouterLink>
       <div class="layer" :class="{ open: item.open }">
         <ul>
           <li v-for="sub in item.children" :key="sub.id">
             <RouterLink to="/">
-              <img :src="sub.picture" alt="">
+              <img :src="sub.picture" alt="" />
               <p>{{ sub.name }}</p>
             </RouterLink>
           </li>
@@ -54,12 +61,12 @@ export default {
   position: relative;
   z-index: 998;
 
-  >li {
+  > li {
     margin-right: 40px;
     width: 38px;
     text-align: center;
 
-    >a {
+    > a {
       font-size: 16px;
       line-height: 32px;
       height: 32px;
@@ -67,7 +74,7 @@ export default {
     }
 
     &:hover {
-      >a {
+      > a {
         color: @xtxColor;
         border-bottom: 1px solid @xtxColor;
       }
@@ -97,7 +104,7 @@ export default {
   overflow: hidden;
   opacity: 0;
   box-shadow: 0 0 5px #ccc;
-  transition: all .2s .1s;
+  transition: all 0.2s 0.1s;
 
   ul {
     display: flex;
