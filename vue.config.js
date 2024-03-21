@@ -11,5 +11,15 @@ module.exports = defineConfig({
         path.join(__dirname, './src/assets/styles/mixins.less')
       ]
     }
+  },
+  devServer: {
+    historyApiFallback: true,
+    allowedHosts: 'all'
+  },
+  configureWebpack: {
+    externals: {
+      qc: 'QC'
+    }
   }
-})
+}
+)

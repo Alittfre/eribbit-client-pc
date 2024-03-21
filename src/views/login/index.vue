@@ -2,13 +2,12 @@
   <LoginHeader>欢迎登录</LoginHeader>
   <section class="login-section">
     <div class="wrapper">
-     <nav>
+      <nav>
         <a @click="activeName='account'" :class="{active:activeName==='account'}" href="javascript:;">账户登录</a>
         <a @click="activeName='qrcode'" :class="{active:activeName==='qrcode'}" href="javascript:;">扫码登录</a>
       </nav>
-      <!-- 表单 -->
-       <LoginForm v-if="activeName==='account'"></LoginForm>
-      <!-- 二维码 -->
+      <!-- 帐号登录&扫码登录 -->
+      <LoginForm v-if="activeName==='account'">表单</LoginForm>
       <div v-if="activeName==='qrcode'" class="qrcode-box">
         <img src="@/assets/images/qrcode.jpg" alt="">
         <p>打开 <a href="javascript:;">小兔鲜App</a> 扫码登录</p>
@@ -17,27 +16,29 @@
   </section>
   <LoginFooter />
 </template>
-
 <script>
 import LoginHeader from './components/login-header'
 import LoginFooter from './components/login-footer'
+import LoginForm from './components/login-form'
 import { ref } from 'vue'
-import LoginForm from './components/login-form.vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 export default {
-  name: 'Login-Page',
-  components: {
-    LoginHeader,
-    LoginFooter,
-    LoginForm
-  },
+  name: 'PageLogin',
+  components: { LoginHeader, LoginFooter, LoginForm },
   setup () {
     const activeName = ref('account')
+
+    // 存储回跳地址
+    const store = useStore()
+    const route = useRoute()
+    store.commit('user/setRedirectUrl', route.query.redirectUrl || '/')
+
     return { activeName }
   }
 }
 </script>
-
-<style scoped lang='less'>
+<style scoped lang="less">
 .login-section {
   background: url(../../assets/images/login-bg.png) no-repeat center / cover;
   height: 488px;
@@ -49,8 +50,8 @@ export default {
     position: absolute;
     left: 50%;
     top: 54px;
-    transform: translate3d(100px, 0, 0);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    transform: translate3d(100px,0,0);
+    box-shadow: 0 0 10px rgba(0,0,0,.15);
     nav {
       height: 55px;
       border-bottom: 1px solid #f5f5f5;
@@ -68,7 +69,7 @@ export default {
           border-right: 1px solid #f5f5f5;
           text-align: left;
         }
-        &.active {
+        &.active{
           color: @xtxColor;
           font-weight: bold;
         }
@@ -76,6 +77,7 @@ export default {
     }
   }
 }
+// 二维码容器
 .qrcode-box {
   text-align: center;
   padding-top: 40px;
