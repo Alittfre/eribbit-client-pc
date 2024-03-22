@@ -1,12 +1,13 @@
 <template>
   <div class="goods-image">
-    <div class="middle">
+    <div class="middle" :ref="target">
       <div
         class="large"
-        :style="[{ backgroundImage: `url(${images[currIndex]})` }]"
+        v-show="show"
+        :style="[{ backgroundImage: `url(${images[currIndex]})`,bgPosition}]"
       ></div>
       <img :src="images[currIndex]" alt="" />
-      <div class="layer"></div>
+      <div class="layer" v-show="show" :style="position"></div>
     </div>
     <ul class="small">
       <li
