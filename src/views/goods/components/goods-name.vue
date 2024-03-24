@@ -1,9 +1,9 @@
 <template>
-  <p class="g-name">{{goods.name}}</p>
-  <p class="g-desc">{{goods.desc}}</p>
+  <p class="g-name">{{ goods.name }}</p>
+  <p class="g-desc">{{ goods.desc }}</p>
   <p class="g-price">
-    <span>{{goods.price}}</span>
-    <span>{{goods.oldPrice}}</span>
+    <span>{{ goods.price }}</span>
+    <span>{{ goods.oldPrice }}</span>
   </p>
   <div class="g-service">
     <dl>
@@ -12,7 +12,7 @@
     </dl>
     <dl>
       <dt>配送</dt>
-      <dd>至 </dd>
+      <dd>至 <xtxCity :fullLocation="fullLocation" @change="changeCity"/></dd>
     </dl>
     <dl>
       <dt>服务</dt>
@@ -27,20 +27,53 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import xtxCity from '@/components/library/xtx-city.vue'
 export default {
   name: 'GoodName',
+  components: {
+    xtxCity
+  },
   props: {
     goods: {
       type: Object,
       default: () => ({})
     }
+  },
+  setup (props) {
+    const provinceCode = ref('110000')
+    const cityCode = ref('119900')
+    const countyCode = ref('110101')
+    const fullLocation = ref('北京市 市辖区 东城区')
+
+    // 默认地址存在
+    if (props.goods.userAddresses) {
+      const defaultAddr = props.goods.userAddresses.find(
+        (addr) => addr.isDefault === 1
+      )
+      if (defaultAddr) {
+        provinceCode.value = defaultAddr.provinceCode
+        cityCode.value = defaultAddr.cityCode
+        countyCode.value = defaultAddr.countyCode
+        fullLocation.value = defaultAddr.fullLocation
+      }
+    }
+
+    // 选择城市
+    const changeCity = (result) => {
+      provinceCode.value = result.provinceCode
+      cityCode.value = result.cityCode
+      countyCode.value = result.countyCode
+      fullLocation.value = result.fullLocation
+    }
+    return { fullLocation, changeCity }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .g-name {
-  font-size: 22px
+  font-size: 22px;
 }
 .g-desc {
   color: #999;

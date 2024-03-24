@@ -2,20 +2,25 @@
   <div class="xtx-goods-page" v-if="goods">
     <div class="container">
       <!-- 面包屑 -->
-       <xtxBread>
+      <xtxBread>
         <xtxBreadItem to="/">首页</xtxBreadItem>
-        <xtxBreadItem :to="'/category/'+goods.categories[0].id">{{goods.categories[0].name}}</xtxBreadItem>
-        <xtxBreadItem :to="'/category/sub/'+goods.categories[1].id">{{goods.categories[1].name}}</xtxBreadItem>
-        <xtxBreadItem>{{goods.name}}</xtxBreadItem>
+        <xtxBreadItem :to="'/category/' + goods.categories[0].id">{{
+          goods.categories[0].name
+        }}</xtxBreadItem>
+        <xtxBreadItem :to="'/category/sub/' + goods.categories[1].id">{{
+          goods.categories[1].name
+        }}</xtxBreadItem>
+        <xtxBreadItem>{{ goods.name }}</xtxBreadItem>
       </xtxBread>
       <!-- 商品信息 -->
       <div class="goods-info">
         <div class="media">
           <GoodsImage :images="goods.mainPictures"></GoodsImage>
-          <GoodsSales/>
+          <GoodsSales />
         </div>
         <div class="spec">
-          <GoodsName :goods="goods"/>
+          <GoodsName :goods="goods" />
+          <GoodsSku :goods="goods" @change="changeSku" />
         </div>
       </div>
       <!-- 商品推荐 -->
@@ -36,34 +41,56 @@
 </template>
 
 <script>
-import { nextTick, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import GoodsRelevant from './components/goods-relevant'
 import { findGood } from '@/api/product'
 import { useRoute } from 'vue-router'
 import GoodsImage from './components/goods-image.vue'
 import GoodsSales from './components/goods-sales.vue'
 import GoodsName from './components/goods-name.vue'
+import GoodsSku from './components/goods-sku.vue'
 export default {
   name: 'XtxGoodsPage',
-  components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName },
+  components: {
+    GoodsRelevant,
+    GoodsImage,
+    GoodsSales,
+    GoodsName,
+    GoodsSku
+  },
   setup () {
     const goods = useGoods()
-    return { goods }
+    const changeSku = (sku) => {
+      if (sku.skuId) {
+        goods.value.price = sku.price
+        goods.value.oldPrice = sku.oldPrice
+        goods.value.inventory = sku.inventory
+      }
+    }
+    return { goods, changeSku }
   }
 }
 const useGoods = () => {
   const goods = ref(null)
   const route = useRoute()
-  watch(() => route.params.id, (newVal) => {
-    if (newVal && `/product/${newVal}` === route.path) {
-      findGood(route.params.id).then(data => {
-        goods.value = null
-        nextTick(() => {
-          goods.value = data.result
+  watch(
+    () => route.params.id,
+    (newVal) => {
+      if (newVal && `/product/${newVal}` === route.path) {
+        findGood(route.params.id).then(({ result }) => {
+          result.skus.forEach((sku) => {
+            const sortSpecs = []
+            result.specs.forEach((spec) => {
+              sortSpecs.push(sku.specs.find((item) => item.name === spec.name))
+            })
+            sku.specs = sortSpecs
+          })
+          goods.value = result
         })
-      })
-    }
-  }, { immediate: true })
+      }
+    },
+    { immediate: true }
+  )
   return goods
 }
 </script>i

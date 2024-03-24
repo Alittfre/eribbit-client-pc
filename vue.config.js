@@ -19,23 +19,23 @@ module.exports = defineConfig({
   configureWebpack: {
     externals: {
       qc: 'QC'
-    },
-    module: {
-      rules: [
-        {
-          test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-          use: [
-            {
-              loader: 'url-loader',
-              options: {
-                limit: 10000, // 小于10kb的图片将被转换成base64编码
-                name: 'img/[name].[hash:7].[ext]'
-              }
-            }
-          ]
-        }
-      ]
     }
+    // module: {
+    //   rules: [
+    //     {
+    //       test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+    //       use: [
+    //         {
+    //           loader: 'url-loader',
+    //           options: {
+    //             limit: 10000, // 小于10kb的图片将被转换成base64编码
+    //             name: 'img/[name].[hash:7].[ext]'
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   ]
+    // }
   }
 }
 )
