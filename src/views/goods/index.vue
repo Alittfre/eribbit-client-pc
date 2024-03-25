@@ -29,25 +29,30 @@
           <!-- 商品+评价 -->
           <GoodsTabs />
           <!-- 注意事项 -->
-          <div class="goods-warn"></div>
+          <GoodsWarn/>
         </div>
         <!-- 24热榜+专题推荐 -->
-        <div class="goods-aside"></div>
+        <div class="goods-aside">
+          <GoodsHot :goodsId="goods.id" :type="1" />
+          <GoodsHot :goodsId="goods.id" :type="2" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, watch } from 'vue'
-import GoodsRelevant from './components/goods-relevant'
+import { provide, ref, watch } from 'vue'
 import { findGood } from '@/api/product'
 import { useRoute } from 'vue-router'
+import GoodsRelevant from './components/goods-relevant'
 import GoodsImage from './components/goods-image.vue'
 import GoodsSales from './components/goods-sales.vue'
 import GoodsName from './components/goods-name.vue'
 import GoodsSku from './components/goods-sku.vue'
 import GoodsTabs from './components/goods-tabs.vue'
+import GoodsHot from './components/goods-hot.vue'
+import GoodsWarn from './components/goods-warn.vue'
 export default {
   name: 'XtxGoodsPage',
   components: {
@@ -56,10 +61,13 @@ export default {
     GoodsSales,
     GoodsName,
     GoodsSku,
-    GoodsTabs
+    GoodsTabs,
+    GoodsHot,
+    GoodsWarn
   },
   setup () {
-    const goods = useGoods()
+    let goods = ref(null)
+    goods = useGoods()
     const changeSku = (sku) => {
       if (sku.skuId) {
         goods.value.price = sku.price
@@ -69,6 +77,9 @@ export default {
     }
     // numbox数量
     const num = ref(1)
+
+    // provide注入goods
+    provide('goods', goods)
     return { goods, changeSku, num }
   }
 }
