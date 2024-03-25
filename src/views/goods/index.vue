@@ -4,13 +4,9 @@
       <!-- 面包屑 -->
       <xtxBread>
         <xtxBreadItem to="/">首页</xtxBreadItem>
-        <xtxBreadItem :to="'/category/' + goods.categories[0].id">{{
-          goods.categories[0].name
-        }}</xtxBreadItem>
-        <xtxBreadItem :to="'/category/sub/' + goods.categories[1].id">{{
-          goods.categories[1].name
-        }}</xtxBreadItem>
-        <xtxBreadItem>{{ goods.name }}</xtxBreadItem>
+        <xtxBreadItem :to="`/category/${goods.categories[1].id}`">{{goods.categories[1].name}}</xtxBreadItem>
+        <xtxBreadItem :to="`/category/sub/${goods.categories[0].id}`">{{goods.categories[0].name}}</xtxBreadItem>
+        <xtxBreadItem>{{goods.name}}</xtxBreadItem>
       </xtxBread>
       <!-- 商品信息 -->
       <div class="goods-info">
@@ -21,15 +17,17 @@
         <div class="spec">
           <GoodsName :goods="goods" />
           <GoodsSku :goods="goods" @change="changeSku" />
+          <XtxNumbox label="数量" v-model="num" :max="goods.inventory" />
+          <XtxButton type="primary" style="margin-top:20px;">加入购物车</XtxButton>
         </div>
       </div>
       <!-- 商品推荐 -->
-      <GoodsRelevant />
+      <GoodsRelevant :goodsId="goods.id"/>
       <!-- 商品详情 -->
       <div class="goods-footer">
         <div class="goods-article">
           <!-- 商品+评价 -->
-          <div class="goods-tabs"></div>
+          <GoodsTabs />
           <!-- 注意事项 -->
           <div class="goods-warn"></div>
         </div>
@@ -49,6 +47,7 @@ import GoodsImage from './components/goods-image.vue'
 import GoodsSales from './components/goods-sales.vue'
 import GoodsName from './components/goods-name.vue'
 import GoodsSku from './components/goods-sku.vue'
+import GoodsTabs from './components/goods-tabs.vue'
 export default {
   name: 'XtxGoodsPage',
   components: {
@@ -56,7 +55,8 @@ export default {
     GoodsImage,
     GoodsSales,
     GoodsName,
-    GoodsSku
+    GoodsSku,
+    GoodsTabs
   },
   setup () {
     const goods = useGoods()
@@ -67,7 +67,9 @@ export default {
         goods.value.inventory = sku.inventory
       }
     }
-    return { goods, changeSku }
+    // numbox数量
+    const num = ref(1)
+    return { goods, changeSku, num }
   }
 }
 const useGoods = () => {
@@ -111,10 +113,6 @@ const useGoods = () => {
     width: 280px;
     min-height: 1000px;
   }
-}
-.goods-tabs {
-  min-height: 600px;
-  background: #fff;
 }
 .goods-warn {
   min-height: 600px;

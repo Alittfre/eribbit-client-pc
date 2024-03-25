@@ -67,7 +67,7 @@ export default {
 
     const pathMap = getPathMap(props.goods.skus)
     initSelectedStatus(props.goods, props.skuId)
-    updateDisabledStatus(props.specs, pathMap)
+    updateDisabledStatus(props.goods.specs, pathMap)
     // 触发change事件将sku数据传递出去
     const selectedArr = getSelectedArr(props.goods.specs).filter((v) => v)
     if (selectedArr.length === props.goods.specs.length) {
