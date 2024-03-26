@@ -9,7 +9,7 @@
             v-if="val.picture"
             :title="val.name"
             :class="{ selected: val.selected }"
-            @click="clickSpecs(item.val)"
+            @click="clickSpecs(item, val)"
             alt=""
           />
           <span
@@ -19,21 +19,6 @@
             >{{ val.name }}</span
           >
         </template>
-      </dd>
-    </dl>
-    <dl>
-      <dt>尺寸</dt>
-      <dd>
-        <span class="disabled">10英寸</span>
-        <span class="selected">20英寸</span>
-        <span>30英寸</span>
-      </dd>
-    </dl>
-    <dl>
-      <dt>版本</dt>
-      <dd>
-        <span>美版</span>
-        <span>港版</span>
       </dd>
     </dl>
   </div>
