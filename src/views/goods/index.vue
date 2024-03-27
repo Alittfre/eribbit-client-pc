@@ -76,22 +76,24 @@ export default {
     GoodsWarn
   },
   setup () {
-    let goods = ref(null)
-    goods = useGoods()
+    const currSku = ref(null)
+    const goods = useGoods()
     const changeSku = (sku) => {
       if (sku.skuId) {
         goods.value.price = sku.price
         goods.value.oldPrice = sku.oldPrice
         goods.value.inventory = sku.inventory
       }
+      currSku.value = sku
+      console.log(currSku.value)
     }
     // numbox数量
     const num = ref(1)
 
     // 加入购物车
     const store = useStore()
-    const currSku = ref(null)
     const insertCart = () => {
+      console.log(currSku.value)
       if (currSku.value && currSku.value.skuId) {
         const { skuId, specsText: attrsText, inventory: stock } = currSku.value
         const { id, name, price, mainPictures } = goods.value

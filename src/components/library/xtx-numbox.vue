@@ -38,7 +38,7 @@ export default {
       num.value = newValue
       emit('change', newValue)
     }
-    return { num, changeNum }
+    return { changeNum }
   }
 }
 </script>

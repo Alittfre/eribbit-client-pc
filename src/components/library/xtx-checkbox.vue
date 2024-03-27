@@ -11,11 +11,18 @@
 import { ref, watch } from 'vue'
 export default {
   name: 'XtxCheckbox',
+  props: {
+    modelValue: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup (props, { emit }) {
     const checked = ref(false)
     const changeChecked = () => {
       checked.value = !checked.value
       emit('update:modelValue', checked.value)
+      emit('change', checked.value)
     }
 
     watch(() => props.modelValue, () => {

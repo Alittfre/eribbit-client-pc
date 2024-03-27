@@ -8,7 +8,7 @@
       </li>
     </ul>
     <!-- 图片 -->
-    <img v-for="item in goods.details.pictures" :key="item" v-lazy="item" :src="item" alt="">
+    <img v-for="item in goods.details.pictures" :key="item" v-lazyload="item" :src="item" alt="">
   </div>
 </template>
 
