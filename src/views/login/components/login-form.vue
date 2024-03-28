@@ -207,6 +207,7 @@ export default {
         if (time.value === 0) {
         // 没有倒计时才可以发送
           await userMobileLoginMsg(form.mobile)
+          store.dispatch('cart/mergeCart')
           Message({ type: 'success', text: '发送成功' })
           time.value = 60
           resume()

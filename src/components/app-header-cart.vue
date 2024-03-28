@@ -48,6 +48,8 @@ export default {
         Message({ type: 'error', text: '删除失败' })
       })
     }
+    // 获取最新商品信息
+    store.dispatch('cart/findCart')
     return { deleteCart }
   }
 }
